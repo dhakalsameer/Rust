@@ -1,0 +1,120 @@
+sudo systemctl restart docker
+
+docker run -d -p 8090:80 docker/welcome-to-docker
+docker ps
+localhost:8090
+docker stop 
+docker rm
+
+#Running local file using Docker 
+sudo systemctl start docker
+sudo systemctl enable docker
+mkdir my-apache-project
+cd my-apache-project
+
+nano index.html
+nano Dockerfile 
+
+------------------------------------------
+FROM httpd:2.4
+COPY index.html/usr/local/apache2/htdocs/
+-------------------------------------------
+
+docker build -t my-apache-server .
+docker images
+docker run -p 8081:80 -d my-apache-server
+localhost:8081
+docker ps
+docker stop
+
+
+#Running Python Project using Docker
+mkdir my-python-project
+cd my-python-project
+nano app.py
+nano Dockerfile
+
+--------------------------------------------
+FROM python:3.9
+
+WORKDIR /app
+
+COPY . .
+
+CMD ["python3", "app.py"]
+-----------------------------------------------
+
+docker build -t my-python-project .
+docker images
+docker run my-python-project 
+docker ps -a
+docker stop
+
+#Sharing others
+docker build -t my-python-project .
+docker tag my-python-project sameeer87/my-python-project
+docker login
+docker push sameer87/my-python-project
+#sharing
+#save in the docker hub or docker daemon
+docker pull sameer87/my-python-project
+docker run sameer87/my-python-project
+
+#Docker compose and Docker Swarm
+mkdir docker-compose-lab
+cd 
+nano docker-compose.yml
+
+---------------------------------------
+version: "3.9"
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8081:80"
+    volumes:
+      - ./html:/usr/share/nginx/html:ro
+------------------------------------------
+docker-compose up -d
+localhost:8081
+
+#scale the services
+nano docker-compose.yml
+
+------------------------------------------
+version: '3'
+services:
+  web:
+    image: nginx:latest
+    expose:
+      - "80"
+--------------------------------------------
+docker compose up -d --scale web=3
+
+
+#Initialize a Dock Swarm
+hostname -I
+docker swarm init --advertise-addr 192.168.100.104
+docker node ls
+
+
+pipeline {
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        echo 'Building the project...'
+        }
+      }
+    stage('Test') {
+      steps {
+        echo 'Running tests...'
+      }
+    }
+    stage('Deploy') {
+      steps {
+        echo 'Deploying the application...'
+      }
+    }
+  }
+}
