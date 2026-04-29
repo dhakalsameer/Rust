@@ -1,0 +1,147 @@
+mkdir git-practical
+cd git-practical
+
+git init
+touch example.txt
+echo "This is my first Git practical file." > example.txt
+# Check status
+git status
+ ---------------------------------
+# STEP 6: Stage and Commit File
+# ---------------------------------
+
+git add example.txt
+
+git commit -m "Add content to example.txt"
+
+
+# ---------------------------------
+# STEP 7: Modify File and Check History
+# ---------------------------------
+
+echo "Second line added for Git practical." >> example.txt
+
+git status
+
+git diff
+
+git add example.txt
+
+git commit -m "Updated example.txt with second line"
+
+git log --oneline
+
+
+
+# ---------------------------------
+# STEP 8: Create New Branch
+# ---------------------------------
+
+git checkout -b feature
+
+
+# ---------------------------------
+# STEP 9: Make Changes in Feature Branch
+# ---------------------------------
+
+echo "This change is made inside feature branch." >> example.txt
+
+git add example.txt
+
+git commit -m "Updated file in feature branch"
+
+
+# ---------------------------------
+# STEP 10: Switch Back to Main Branch
+# ---------------------------------
+
+# New Git uses main
+git checkout main
+
+# If your branch is master, use:
+# git checkout master
+
+
+# ---------------------------------
+# STEP 11: Merge Feature Branch
+# ---------------------------------
+
+git merge feature
+
+
+# ---------------------------------
+# STEP 12: Create GitHub Repository using gh
+# ---------------------------------
+
+gh repo create git-practical \
+  --public \
+  --source=. \
+  --remote=origin \
+  --push
+  
+  
+  # ---------------------------------
+# STEP 13: Verify Remote Repository
+# ---------------------------------
+
+git remote -v
+
+
+# ---------------------------------
+# STEP 14: Create Another Branch for PR
+# ---------------------------------
+
+git checkout -b new-feature
+
+# ---------------------------------
+# STEP 15: Make New Changes
+# ---------------------------------
+
+echo "This is pull request branch content." >> example.txt
+
+git add example.txt
+
+git commit -m "Added content for pull request"
+
+# ---------------------------------
+# STEP 16: Push Branch to GitHub
+# ---------------------------------
+
+git push origin new-feature
+
+
+
+# ---------------------------------
+# STEP 17: Create Pull Request using gh
+# ---------------------------------
+
+gh pr create \
+  --title "Add new-feature changes" \
+  --body "This PR adds new content to example.txt from new-feature branch"
+
+
+# ---------------------------------
+# STEP 18: Merge Pull Request using gh
+# ---------------------------------
+
+gh pr merge --merge
+
+
+# ---------------------------------
+# STEP 19: Sync Local Repository
+# ---------------------------------
+
+git checkout main
+
+git pull origin main
+
+# ---------------------------------
+# STEP 20: Final Verification
+# ---------------------------------
+
+git branch
+
+git log --oneline
+
+git status
+
